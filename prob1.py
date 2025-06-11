@@ -84,17 +84,6 @@ hypothesis = 0.9
 
 """
 Problem 3
-
-I am testing a product, and I have the following data set.
-Column A: Test number.
-Column B: Whether my assistant thought it was hot or cold outside.
-Column C: Actual temperature at the beginning of the test.
-Column D: Result of the test, with 1 representing a failure and 0 representing a success.
-1. I am planning an important demonstration, and on my target date, the
-temperature is going to be 52 degrees, which my assistant would describe
-as cold. Assuming that I want the product to succeed in the demonstration, should I proceed, or should I delay the demonstration? (Use the
-framework established in the first two problems as a blueprint here. Establish what the data are telling you, what sorts of ideas we are testing,
-what the results mean, etc.
 """
 
 p3_ass = p3_df["Assistant"]
