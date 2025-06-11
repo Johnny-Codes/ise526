@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy
 
+
 filename = "Problem Set 1 Data.xlsx"
 
 with open(filename, "rb") as f:
@@ -38,6 +39,11 @@ x_mode = hours_slept.mode()[0]
 
 std_dev = np.std(hours_slept)
 #print(std_dev)
+#print(f"hours slept: {len(hours_slept)}")
+low_ci = x_bar - 1.96 * (std_dev)/np.sqrt(len(hours_slept))
+high_ci = x_bar + 1.96 * (std_dev)/np.sqrt(len(hours_slept))
+
+#print(f"CI: ({low_ci}, {high_ci})")
 
 min_val = np.min(hours_slept)
 #print(min_val)
@@ -60,6 +66,64 @@ success_rate = p2_dict["success"] / (p2_dict["success"] + p2_dict["failure"])
 
 #print(f"Success rate: {success_rate}")
 
-fig, ax = plt.subplots()
-ax.pie([p2_dict["success"], p2_dict["failure"]], labels=["Success", "Failure"], autopct='%1.1f%%')
-plt.show()
+#fig, ax = plt.subplots()
+#ax.pie([p2_dict["success"], p2_dict["failure"]], labels=["Success", "Failure"], autopct='%1.1f%%')
+#plt.show()
+
+# z testing
+k = 0
+for i in p2_df["Treatment Outcome"]:
+	if i == 1:
+		k += 1
+n = len(p2_df["Treatment Outcome"])
+pvalue = .05
+hypothesis = 0.9
+#print(f"{k=}, {n=}, {pvalue=}")
+
+#print(scipy.stats.binomtest(k, n, p = hypothesis, alternative="less"))
+
+"""
+Problem 3
+
+I am testing a product, and I have the following data set.
+Column A: Test number.
+Column B: Whether my assistant thought it was hot or cold outside.
+Column C: Actual temperature at the beginning of the test.
+Column D: Result of the test, with 1 representing a failure and 0 representing a success.
+1. I am planning an important demonstration, and on my target date, the
+temperature is going to be 52 degrees, which my assistant would describe
+as cold. Assuming that I want the product to succeed in the demonstration, should I proceed, or should I delay the demonstration? (Use the
+framework established in the first two problems as a blueprint here. Establish what the data are telling you, what sorts of ideas we are testing,
+what the results mean, etc.
+"""
+
+p3_ass = p3_df["Assistant"]
+p3_temp = p3_df["Temperature"]
+p3_fail = 0
+for i in p3_df["fail"]:
+	if i == 1:
+		p3_fail+= 1
+p3_len = len(p3_df["Run"])
+#print(p3_ass)
+prob_fail = p3_fail / p3_len
+print(f"prob fail: {prob_fail}, prob succ = {1 - prob_fail}")
+cold_total = 0
+cold_success = 0
+hot_total = 0
+hot_success = 0
+
+for i, r in p3_df.iterrows():
+	if r["Assistant"] == "cold":
+		cold_total += 1
+		if r["fail"] == 0:
+			cold_success += 1
+	else:
+		hot_total += 1
+		if r["fail"] == 0:
+			hot_success += 1
+cold_mean = cold_success / cold_total if cold_total > 0 else 0
+hot_mean = hot_success / hot_total if hot_total > 0 else 0
+print(f"total cold = {cold_total}, cold_success = {cold_success}, cold_success_avg = {cold_mean}")
+print(f"hot_total = {hot_total}, hot_success = {hot_success}, hot_successs_avg = {hot_mean}")
+
+
